@@ -1,0 +1,88 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+html,
+body {
+  /* height: 100%; */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* globals */
+
+.primary-text-color {
+  color: #1779c9;
+}
+
+.text-color-white {
+  color: rgba(255, 255, 255, 1);
+}
+
+.body-container {
+  background-image: url("../assets/images/BG.jpg");
+  min-height: 800px;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.patient-container {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+}
+
+.login-container {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+}
+
+.patient-type-card {
+  width: 403px;
+  height: 407px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.patient-type-name {
+  text-align: center;
+}
+
+.patient-type-logo {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.patient-type-logo img {
+  /* width: 33%; */
+}
+
+.patient-type-logo div {
+  text-align: center;
+}
+
+.continue-button {
+  display: block;
+  margin: auto;
+  min-width: 250px;
+}
+
+/* Sidebar */
+
+#side_nav {
+  background: rgba(23, 121, 201, 1);
+  width: 20%;
+}
+
+.sidebar-content {
+  margin-top: 15%;
+}
+
+.content {
+  min-height: 100vh;
+  width: 100%;
+}

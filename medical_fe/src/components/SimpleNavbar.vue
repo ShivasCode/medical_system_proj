@@ -1,0 +1,17 @@
+<script setup></script>
+
+<template>
+  <nav><img class="logo" src="../assets/images/Logo.svg" alt="" /></nav>
+</template>
+
+<style scoped>
+nav {
+  padding: 20px 10px;
+  border-bottom: 2px outset rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  margin-left: 5%;
+  max-width: 10%;
+}
+</style>
