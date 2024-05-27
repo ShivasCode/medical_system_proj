@@ -28,3 +28,4 @@ class Appointment(models.Model):
     approved = models.BooleanField(default=False)
     schedule = models.ForeignKey(Schedule, related_name='appointment_schedule', on_delete=models.SET_NULL, blank=True, null=True)
     pre_assessment = models.ForeignKey(Pre_assessment, related_name='appointment_pre_assessment', on_delete=models.SET_NULL, blank=True, null=True)
+    
