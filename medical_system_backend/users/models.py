@@ -6,7 +6,7 @@ from django.conf import settings
 
 # Create your models here.
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 

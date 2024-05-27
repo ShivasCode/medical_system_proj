@@ -2,9 +2,11 @@ from django.shortcuts import render
 
 from rest_framework import generics,permissions
 from rest_framework.response import Response
+from django.utils.dateparse import parse_time
 
 from django.conf import settings
 
+from rest_framework.exceptions import ValidationError
 
 
 from .serializers import PatientSerializer, DoctorRegistrationSerializer, DoctorLoginSerializer
@@ -23,13 +25,21 @@ from rest_framework.exceptions import NotFound
 
 from rest_framework import status
 
+from datetime import datetime
 
 class PatientRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = PatientSerializer
     permission_classes = (permissions.AllowAny,)
 
-
+    def validate_time_format(self, time_string):
+        try:
+            # Parse the time string using datetime
+            parsed_time = datetime.strptime(time_string, '%I:%M %p').time()
+            return parsed_time
+        except ValueError as e:
+            raise ValidationError(str(e))
+        
     def generate_verification_code(self):
         characters = string.ascii_letters + string.digits
         verification_code = ''.join(random.choices(characters, k=10))
@@ -62,13 +72,24 @@ class PatientRegistrationView(generics.CreateAPIView):
             'current_medications': request.data.get('current_medications'),
             'smoker': request.data.get('smoker'),
         }
+        start_time_str = request.data.get('start_time')
+        end_time_str = request.data.get('end_time')
+        print(start_time_str)
 
+        try:
+            start_time = self.validate_time_format(start_time_str)
+            end_time = self.validate_time_format(end_time_str)
+            print(start_time)
+        except ValidationError as e:
+            return Response(
+                {"message": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         appointment_data = {
-            'start_time': request.data.get('start_time'),
-            'end_time': request.data.get('end_time'),
+            'start_time': start_time ,
+            'end_time': end_time ,
             'weekday': request.data.get('weekday'),
             'date': request.data.get('date'),
-
         }
 
         try:
