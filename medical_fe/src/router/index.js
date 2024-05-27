@@ -5,6 +5,7 @@ import DoctorsHomePage from "../views/DoctorsHomePage.vue";
 import ListOfPatient from "../views/ListOfPatient.vue";
 import DoctorRegisterPage from "../views/DoctorRegisterPage.vue";
 import SuccessPage from "../views/SuccessPage.vue";
+import AppointmentRetrieve from "../components/AppointmentRetrieve.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,12 @@ const router = createRouter({
       path: "/success/",
       name: "success",
       component: SuccessPage,
+    },
+    {
+      path: "/appointment-retrieve/:id",
+      name: "AppointmentRetrieve",
+      component: AppointmentRetrieve,
+      props: true 
     },
   ],
 });

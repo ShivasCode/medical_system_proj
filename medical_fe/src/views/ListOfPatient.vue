@@ -9,7 +9,7 @@
           <thead class="border table-borderless">
             <tr class="table-row">
               <th scope="col">Patient Name</th>
-              <th scope="col">Date Consulted</th>
+              <th scope="col">Date of Consultation</th>
               <th></th>
             </tr>
           </thead>
@@ -25,13 +25,16 @@
                 {{ patient.appointment[0].end_time }}
               </td>
               <td>
-                <button
-                  class="btn btn-primary"
-                  @click="appointment_disapproval(patient.appointment[0].id)"
-                >
-                  Disapprove
-                </button>
-              </td>
+    <button v-if="!patient.appointment[0].approved" class="btn btn-success me-2" @click="appointment_approval(patient.appointment[0].id)">
+        Approve
+    </button>
+    <button v-if="!patient.appointment[0].approved" class="btn btn-danger me-2" @click="appointment_disapproval(patient.appointment[0].id)">
+        Disapprove
+    </button>
+    <button class="btn btn-primary" @click="view_appointment(patient.appointment[0].id)">
+        View
+    </button>
+</td>
             </tr>
           </tbody>
         </table>
@@ -45,16 +48,22 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import Sidebar from "../components/Sidebar.vue";
 import SimpleNavbar from "../components/SimpleNavbar.vue";
+import AppointmentRetrieve from "../components/AppointmentRetrieve.vue";
+
+import { useRouter } from "vue-router";
 
 export default {
   name: "DoctorPatients",
   components: {
     Sidebar,
     SimpleNavbar,
+    AppointmentRetrieve
   },
   setup() {
     const patients = ref([]);
     const token = localStorage.getItem("token");
+    const router = useRouter();
+    const appointment = ref(null);
 
     onMounted(async () => {
       try {
@@ -73,6 +82,12 @@ export default {
         console.error(error);
       }
     });
+    const view_appointment = (appointmentId) => {
+      router.push({ 
+        name: "AppointmentRetrieve", 
+        params: { id: appointmentId }
+      });
+    };
 
     const appointment_disapproval = async (id) => {
       const response = await axios
@@ -87,8 +102,24 @@ export default {
 
       console.log(response.data);
     };
-
-    return { patients, appointment_disapproval };
+    const appointment_approval = async (id) => {
+        try {
+            const response = await axios.post(
+                `http://127.0.0.1:8000/api/v1/appointment-approval/${id}/`,
+                null,
+                {
+                    headers: {
+                        Authorization: `Token ${token}`,
+                    },
+                }
+            ).then((response) => {
+          location.reload();
+        });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    return { patients, appointment_disapproval,appointment_approval,view_appointment,appointment  };
   },
 };
 </script>

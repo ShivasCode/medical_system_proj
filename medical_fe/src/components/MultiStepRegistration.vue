@@ -1,6 +1,7 @@
 <template>
   <nav><img class="logo" src="../assets/images/Logo.svg" alt="" /></nav>
   <div :class="{ backdrop: isActiveDoctorCard }"></div>
+  
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8">
@@ -10,6 +11,8 @@
             v-show="isActiveDoctorCard === true"
             v-click-outside="onClickOutside"
           >
+          <p class="close-instruction">Click outside the card to close</p>
+
             <div class="align-items-center mt-3">
               <div
                 v-for="schedule in selectedDoctor"
@@ -53,18 +56,9 @@
                     </p>
                     <div class="dropdown mb-3">
                       <p class="fs-5 fw-bold">Specialist</p>
-                      <i
-                        @click="toggle"
-                        v-if="isActive1 == false"
-                        class="bi bi-caret-right-fill"
-                      ></i>
-                      <i
-                        @click="toggle"
-                        v-if="isActive1"
-                        class="bi bi-caret-down-fill"
-                      ></i>
+                      
                     </div>
-                    <div class="container-doctor-lst mb-3" v-if="isActive1">
+                    <div class="container-doctor-lst mb-3" >
                       <div
                         v-for="doctor in availableDoctors"
                         :key="doctor.id"
@@ -86,61 +80,7 @@
                         </p>
                       </div>
                     </div>
-                    <div class="dropdown">
-                      <p class="fs-5">Sub-specialist</p>
-                      <i
-                        @click="toggle2"
-                        v-if="isActive2 == false"
-                        class="bi bi-caret-right-fill"
-                      ></i>
-                      <i
-                        @click="toggle2"
-                        v-if="isActive2"
-                        class="bi bi-caret-down-fill"
-                      ></i>
-                    </div>
-                    <div class="container-doctor-lst" v-if="isActive2">
-                      <div class="card doctor-card">
-                        <img
-                          class="doctor-image"
-                          src="../assets/images/jenny.jpg"
-                          alt=""
-                        />
-                        <p class="doctor-name fs-5">Jenny mercado</p>
-                        <p class="fs-6">Cardiologist</p>
-                        <p class="fs-6">+63 9152 345 895</p>
-                      </div>
-                      <div class="card doctor-card">
-                        <img
-                          class="doctor-image"
-                          src="../assets/images/jenny.jpg"
-                          alt=""
-                        />
-                        <p class="doctor-name fs-5">Jenny mercado</p>
-                        <p class="fs-6">Cardiologist</p>
-                        <p class="fs-6">+63 9152 345 895</p>
-                      </div>
-                      <div class="card doctor-card">
-                        <img
-                          class="doctor-image"
-                          src="../assets/images/jenny.jpg"
-                          alt=""
-                        />
-                        <p class="doctor-name fs-5">Jenny mercado</p>
-                        <p class="fs-6">Cardiologist</p>
-                        <p class="fs-6">+63 9152 345 895</p>
-                      </div>
-                      <div class="card doctor-card">
-                        <img
-                          class="doctor-image"
-                          src="../assets/images/jenny.jpg"
-                          alt=""
-                        />
-                        <p class="doctor-name fs-5">Jenny mercado</p>
-                        <p class="fs-6">Cardiologist</p>
-                        <p class="fs-6">+63 9152 345 895</p>
-                      </div>
-                    </div>
+                  
                   </div>
                 </div>
                 <button type="button" class="btn btn-primary" @click="nextStep">
@@ -564,6 +504,7 @@ export default {
         );
 
         availableDoctors.value = response.data;
+        console.log(response)
         console.log("Available Doctors:", availableDoctors.value);
       } catch (error) {
         console.error("Error:", error);
@@ -571,6 +512,7 @@ export default {
     };
 
     const selectSchedule = (schedule) => {
+      console.log(schedule)
       schedule.selected = !schedule.selected;
       formData.value.start_time = schedule.start_time;
       formData.value.end_time = schedule.end_time;
@@ -734,6 +676,13 @@ textarea {
   top: 30%;
   z-index: 100;
   border-radius: 5%;
+}
+
+.close-instruction {
+  padding-top: 10px;
+  text-align: center;
+  color: white;
+  margin-bottom: 20px;
 }
 
 .doctor-card > p {
