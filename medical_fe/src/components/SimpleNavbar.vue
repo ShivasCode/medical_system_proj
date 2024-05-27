@@ -1,8 +1,11 @@
 <script setup></script>
 
 <template>
-  <nav><img class="logo" src="../assets/images/Logo.svg" alt="" /></nav>
-</template>
+<nav>
+    <router-link to="/home">
+      <img class="logo" src="../assets/images/Logo.svg" alt="Logo" />
+    </router-link>
+  </nav></template>
 
 <style scoped>
 nav {

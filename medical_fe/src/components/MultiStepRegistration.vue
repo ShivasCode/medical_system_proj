@@ -1,6 +1,8 @@
 <template>
-  <nav><img class="logo" src="../assets/images/Logo.svg" alt="" /></nav>
-  <div :class="{ backdrop: isActiveDoctorCard }"></div>
+<router-link to="/">
+      <img class="logo" src="../assets/images/Logo.svg" alt="Logo" />
+    </router-link>  
+    <div :class="{ backdrop: isActiveDoctorCard }"></div>
   
   <div class="container">
     <div class="row justify-content-center">
@@ -287,31 +289,30 @@
                 <h3 class="primary-text-color fw-bold">Step 4: Payment</h3>
                 <hr />
                 <div class="payment-container mb-5">
-                  <div class="d-flex align-items-center">
-                    <img src="../assets/images/jenny no bg.jpg" alt="" />
+                    <div class="d-flex align-items-center">
+                      <img src="../assets/images/jenny no bg.jpg" alt="" />
+                      <div>
+                        <h5 class="fw-bold primary-text-color">{{ doctorFirstName }} {{ doctorLastName }}</h5>
+                        <h6>{{ doctorType }}</h6>
+                      </div>
+                    </div>
                     <div>
-                      <h5 class="fw-bold primary-text-color">Jenny mercado</h5>
-                      <h6>Dentistry</h6>
+                      <h5 class="fw-bold primary-text-color">Appointment Schedule</h5>
+                      <h6>
+                        <span class="fw-bold primary-text-color">Date:</span>
+                        {{ appointmentDate }}
+                      </h6>
+                      <h6>
+                        <span class="fw-bold primary-text-color">Time:</span>
+                        {{ appointmentStartTime }} - {{ appointmentEndTime }}
+                      </h6>
+                    </div>
+                    <div>
+                      <h5 class="fw-bold primary-text-color">Consultation Fee</h5>
+                      <h6 class="fw-bold">Php 1,200</h6>
                     </div>
                   </div>
-                  <div>
-                    <h5 class="fw-bold primary-text-color">
-                      Appoinment Schedule
-                    </h5>
-                    <h6>
-                      <span class="fw-bold primary-text-color">Date:</span>
-                      January 10,2021
-                    </h6>
-                    <h6>
-                      <span class="fw-bold primary-text-color">Time:</span> 10:
-                      am - 11:00am
-                    </h6>
-                  </div>
-                  <div>
-                    <h5 class="fw-bold primary-text-color">Consulation Fee</h5>
-                    <h6 class="fw-bold">Php 1,200</h6>
-                  </div>
-                </div>
+
                 <div class="payment-container-2">
                   <p class="">
                     Select option to pay:<span class="fw-bold"> Php 1,200</span>
@@ -363,7 +364,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref,computed  } from "vue";
 import { Calendar, DatePicker } from "v-calendar";
 import "v-calendar/style.css";
 import axios from "axios";
@@ -388,6 +389,7 @@ export default {
     const isActive2 = ref(false);
     const isActiveDoctorCard = ref(false);
     const selectedDoctor = ref([]);
+    const selectedDoctorInfo = ref({});
 
     const isActivePayment = ref(false);
     const selectedOption = ref(null);
@@ -417,7 +419,12 @@ export default {
       date: "",
       schedule_id: "",
     });
-
+    const doctorFirstName = computed(() => selectedDoctorInfo.value.user?.first_name || 'John');
+    const doctorLastName = computed(() => selectedDoctorInfo.value.user?.last_name || 'Doe');
+    const doctorType = computed(() => selectedDoctorInfo.value.user?.doctor_type || 'General Practitioner');
+    const appointmentDate = computed(() => formData.value.date || 'January 10, 2021');
+    const appointmentStartTime = computed(() => formData.value.start_time || '10:00 AM');
+    const appointmentEndTime = computed(() => formData.value.end_time || '11:00 AM');
     const nextStep = () => {
       currentStep.value++;
     };
@@ -474,8 +481,9 @@ export default {
       event.stopPropagation();
       isActiveDoctorCard.value = !isActiveDoctorCard.value;
       console.log(doctor.schedules);
+      console.log(doctor)
       selectedDoctor.value = doctor.schedules;
-
+      selectedDoctorInfo.value = doctor
       // try {
       //   const response = await axios.get(
 
@@ -591,6 +599,13 @@ export default {
       onClickOutside,
       selectedDoctor,
       selectSchedule,
+      selectedDoctorInfo,
+      doctorFirstName,
+      doctorLastName,
+      doctorType,
+      appointmentDate,
+      appointmentStartTime,
+      appointmentEndTime,
     };
   },
 };
